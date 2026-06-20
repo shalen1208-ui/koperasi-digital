@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Koperasi Digital</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3.8 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 7.0.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a6b3c 0%, #2d9e5f 50%, #1a6b3c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .register-wrapper {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .register-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 20px rgba(26, 107, 60, 0.3);
+        }
+
+        .logo-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .logo-area h4 {
+            color: #1a6b3c;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .logo-area p {
+            color: #888;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #444;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e8e8e8;
+            padding: 0.65rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #2d9e5f;
+            box-shadow: 0 0 0 0.2rem rgba(45, 158, 95, 0.15);
+        }
+
+        .input-group .form-control {
+            border-right: none;
+        }
+
+        .input-group-text {
+            border-radius: 0 10px 10px 0;
+            border: 2px solid #e8e8e8;
+            border-left: none;
+            background: white;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: #2d9e5f;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2d9e5f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8f5ee;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(26, 107, 60, 0.3);
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 107, 60, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #888;
+            margin-top: 1.5rem;
+        }
+
+        .login-link a {
+            color: #1a6b3c;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            transition: all 0.3s;
+            background: #e8e8e8;
+        }
+
+        .strength-text {
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-wrapper">
+        <div class="register-card">
+            <!-- Logo -->
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <h4>Koperasi Digital</h4>
+                <p>Daftar sebagai anggota baru</p>
+            </div>
+
+            <!-- Alert -->
+            <div id="alert-box" class="alert d-none" role="alert"></div>
+
+            <!-- Form -->
+            <form id="register-form">
+                <!-- Data Pribadi -->
+                <div class="section-title">Data Pribadi</div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="nama" placeholder="Masukkan nama lengkap" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nomor Telepon</label>
+                    <input type="tel" class="form-control" id="no_telepon" placeholder="Contoh: 08123456789" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Alamat</label>
+                    <textarea class="form-control" id="alamat" rows="2" placeholder="Masukkan alamat lengkap"
+                        required></textarea>
+                </div>
+
+                <!-- Akun -->
+                <div class="section-title mt-3">Data Akun</div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Masukkan email aktif" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="Minimal 6 karakter"
+                            required oninput="checkStrength()">
+                        <span class="input-group-text" onclick="togglePassword('password', 'eye1')">
+                            <i class="fa-solid fa-eye" id="eye1"></i>
+                        </span>
+                    </div>
+                    <div class="password-strength" id="strength-bar"></div>
+                    <div class="strength-text" id="strength-text"></div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Konfirmasi Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="confirm_password" placeholder="Ulangi password"
+                            required>
+                        <span class="input-group-text" onclick="togglePassword('confirm_password', 'eye2')">
+                            <i class="fa-solid fa-eye" id="eye2"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-register btn-primary w-100 text-white" id="btn-register">
+                    <i class="fa-solid fa-user-plus me-2"></i>
+                    <span id="btn-text">Daftar Sekarang</span>
+                    <span id="btn-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+                </button>
+            </form>
+
+            <div class="login-link">
+                Sudah punya akun? <a href="/">Masuk di sini</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        // Cek kalau sudah login
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (token && user) {
+            if (user.role === 'admin') window.location.href = '/admin/dashboard';
+            else window.location.href = '/anggota/dashboard';
+        }
+
+        // Toggle password visibility
+        function togglePassword(fieldId, iconId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(iconId);
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Password strength checker
+        function checkStrength() {
+            const password = document.getElementById('password').value;
+            const bar = document.getElementById('strength-bar');
+            const text = document.getElementById('strength-text');
+
+            if (password.length === 0) {
+                bar.style.background = '#e8e8e8';
+                bar.style.width = '0%';
+                text.textContent = '';
+                return;
+            }
+
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            const levels = [
+                { label: 'Sangat Lemah', color: '#dc3545', width: '20%' },
+                { label: 'Lemah', color: '#fd7e14', width: '40%' },
+                { label: 'Cukup', color: '#ffc107', width: '60%' },
+                { label: 'Kuat', color: '#198754', width: '80%' },
+                { label: 'Sangat Kuat', color: '#1a6b3c', width: '100%' },
+            ];
+
+            const level = levels[Math.min(strength - 1, 4)];
+            bar.style.background = level.color;
+            bar.style.width = level.width;
+            text.style.color = level.color;
+            text.textContent = `Kekuatan password: ${level.label}`;
+        }
+
+        // Show alert
+        function showAlert(message, type = 'danger') {
+            const box = document.getElementById('alert-box');
+            box.className = `alert alert-${type}`;
+            box.textContent = message;
+            box.classList.remove('d-none');
+            box.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Register form submit
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nama = document.getElementById('nama').value.trim();
+            const no_telepon = document.getElementById('no_telepon').value.trim();
+            const alamat = document.getElementById('alamat').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+
+            // Validasi
+            if (password.length < 6) return showAlert('Password minimal 6 karakter.');
+            if (password !== confirm_password) return showAlert('Password dan konfirmasi password tidak cocok.');
+
+            const btnText = document.getElementById('btn-text');
+            const btnSpinner = document.getElementById('btn-spinner');
+            const btnRegister = document.getElementById('btn-register');
+
+            btnText.textContent = 'Memproses...';
+            btnSpinner.classList.remove('d-none');
+            btnRegister.disabled = true;
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, email, password, no_telepon, alamat })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Registrasi Berhasil!',
+                        html: `Selamat datang di Koperasi Digital!<br>
+                   No. Anggota Anda: <strong>${data.no_anggota}</strong><br>
+                   Silakan login untuk melanjutkan.`,
+                        confirmButtonColor: '#1a6b3c',
+                        confirmButtonText: 'Login Sekarang'
+                    });
+                    window.location.href = '/';
+                } else {
+                    showAlert(data.message || 'Registrasi gagal. Coba lagi.');
+                    btnText.textContent = 'Daftar Sekarang';
+                    btnSpinner.classList.add('d-none');
+                    btnRegister.disabled = false;
+                }
+            } catch (err) {
+                showAlert('Terjadi kesalahan. Coba lagi nanti.');
+                btnText.textContent = 'Daftar Sekarang';
+                btnSpinner.classList.add('d-none');
+                btnRegister.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
