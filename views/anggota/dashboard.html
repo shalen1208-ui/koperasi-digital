@@ -1,773 +1,226 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Koperasi Digital</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <style>
-        * {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: #f0f4f8;
-        }
-
-        .sidebar {
-            width: 260px;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #1a6b3c 0%, #0f4a28 100%);
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar-brand {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-brand .brand-icon {
-            width: 42px;
-            height: 42px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sidebar-brand h6 {
-            color: white;
-            font-weight: 700;
-            margin: 0;
-            font-size: 0.95rem;
-        }
-
-        .sidebar-brand small {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.75rem;
-        }
-
-        .sidebar-menu {
-            padding: 1rem 0;
-            flex: 1;
-        }
-
-        .menu-label {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0.5rem 1.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1.5rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-        }
-
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            border-left-color: #4ade80;
-        }
-
-        .sidebar-menu a i {
-            width: 18px;
-            text-align: center;
-        }
-
-        .sidebar-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-footer .user-info {
-            color: white;
-            font-size: 0.8rem;
-        }
-
-        .sidebar-footer .user-info small {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-logout {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 8px;
-            padding: 0.4rem 0.8rem;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-        }
-
-        .btn-logout:hover {
-            background: rgba(220, 53, 69, 0.3);
-            border-color: #dc3545;
-        }
-
-        .main-content {
-            margin-left: 260px;
-            min-height: 100vh;
-        }
-
-        .topbar {
-            background: white;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .topbar h5 {
-            margin: 0;
-            font-weight: 700;
-            color: #1a1a2e;
-        }
-
-        .page-content {
-            padding: 1.5rem;
-        }
-
-        .notif-btn {
-            position: relative;
-            background: #f0f4f8;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .notif-btn:hover {
-            background: #e2e8f0;
-        }
-
-        .notif-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: #dc3545;
-            color: white;
-            font-size: 0.65rem;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
-        .notif-dropdown {
-            position: absolute;
-            top: 50px;
-            right: 0;
-            width: 320px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            z-index: 999;
-            display: none;
-        }
-
-        .notif-dropdown.show {
-            display: block;
-        }
-
-        .notif-header {
-            padding: 1rem;
-            border-bottom: 1px solid #f0f4f8;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .notif-item {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #f8f9fa;
-            font-size: 0.8rem;
-        }
-
-        .notif-item.unread {
-            background: #f0f7ff;
-        }
-
-        .notif-empty {
-            padding: 2rem;
-            text-align: center;
-            color: #aaa;
-            font-size: 0.85rem;
-        }
-
-        /* HERO CARD */
-        .hero-card {
-            background: linear-gradient(135deg, #1a6b3c 0%, #2d9e5f 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .hero-card::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            right: 80px;
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .hero-card h6 {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .hero-card h2 {
-            font-weight: 700;
-            font-size: 2rem;
-            margin-bottom: 0;
-        }
-
-        .hero-card .no-anggota {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-top: 0.5rem;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .hero-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            border-radius: 10px;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Poppins', sans-serif;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .hero-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        /* STAT CARDS */
-        .stat-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.25rem;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .stat-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
-        .stat-card h4 {
-            font-weight: 700;
-            font-size: 1.3rem;
-            margin: 0.5rem 0 0.2rem;
-        }
-
-        .stat-card p {
-            color: #888;
-            font-size: 0.78rem;
-            margin: 0;
-        }
-
-        /* CARDS */
-        .info-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .info-card h6 {
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 1rem;
-        }
-
-        /* CICILAN ITEM */
-        .cicilan-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem;
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
-            border: 1px solid #f0f4f8;
-            transition: all 0.2s;
-        }
-
-        .cicilan-item:hover {
-            background: #f8fafc;
-        }
-
-        .cicilan-item.terlambat {
-            border-color: #fde8e8;
-            background: #fff8f8;
-        }
-
-        /* RIWAYAT ITEM */
-        .riwayat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #f0f4f8;
-        }
-
-        .riwayat-item:last-child {
-            border-bottom: none;
-        }
-
-        .badge {
-            font-size: 0.75rem;
-            padding: 0.4rem 0.7rem;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        .pinjaman-aktif-card {
-            background: linear-gradient(135deg, #fff8e1, #fff3cd);
-            border-radius: 12px;
-            padding: 1.25rem;
-            border: 1px solid #ffc107;
-        }
-
-        .chart-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .chart-card h6 {
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 1rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Koperasi Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .hero-card{background:linear-gradient(135deg,#1a6b3c 0%,#2d9e5f 100%);border-radius:20px;padding:1.5rem;color:white;position:relative;overflow:hidden;margin-bottom:1.5rem;}
+    .hero-card::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.08);}
+    .hero-card h6{color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:0.3rem;}
+    .hero-card h2{font-weight:700;font-size:1.5rem;margin-bottom:0;}
+    .hero-card .no-anggota{background:rgba(255,255,255,0.15);border-radius:8px;padding:0.3rem 0.8rem;font-size:0.8rem;display:inline-block;margin-top:0.5rem;}
+    .hero-actions{display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;}
+    .hero-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:white;border-radius:10px;padding:0.5rem 1rem;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Poppins',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+    .hero-btn:hover{background:rgba(255,255,255,0.3);color:white;}
+    .stat-card{background:white;border-radius:16px;padding:1.25rem;box-shadow:0 2px 15px rgba(0,0,0,0.05);transition:transform 0.2s;}
+    .stat-card:hover{transform:translateY(-3px);}
+    .stat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+    .stat-card h4{font-weight:700;font-size:1.1rem;margin:0.5rem 0 0.2rem;}
+    .stat-card p{color:#888;font-size:0.78rem;margin:0;}
+    .info-card{background:white;border-radius:16px;padding:1.25rem;box-shadow:0 2px 15px rgba(0,0,0,0.05);}
+    .info-card h6{font-weight:700;color:#1a1a2e;margin-bottom:1rem;}
+    .cicilan-item{display:flex;justify-content:space-between;align-items:center;padding:0.75rem;border-radius:10px;margin-bottom:0.5rem;border:1px solid #f0f4f8;}
+    .cicilan-item.terlambat{border-color:#fde8e8;background:#fff8f8;}
+    .riwayat-item{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid #f0f4f8;}
+    .riwayat-item:last-child{border-bottom:none;}
+    .chart-card{background:white;border-radius:16px;padding:1.5rem;box-shadow:0 2px 15px rgba(0,0,0,0.05);}
+    .chart-card h6{font-weight:700;color:#1a1a2e;margin-bottom:1rem;}
+  </style>
 </head>
-
 <body>
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="sidebar-brand d-flex align-items-center gap-3">
-            <div class="brand-icon">
-                <i class="fa-solid fa-building-columns text-white"></i>
-            </div>
-            <div>
-                <h6>Koperasi Digital</h6>
-                <small>Portal Anggota</small>
-            </div>
+  <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+  <div class="sidebar">
+    <div class="sidebar-brand d-flex align-items-center gap-3">
+      <div class="brand-icon"><i class="fa-solid fa-building-columns text-white"></i></div>
+      <div><h6>Koperasi Digital</h6><small>Portal Anggota</small></div>
+    </div>
+    <div class="sidebar-menu">
+      <div class="menu-label">Menu</div>
+      <a href="/anggota/dashboard" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="/anggota/simpanan"><i class="fa-solid fa-piggy-bank"></i> Simpanan</a>
+      <a href="/anggota/pinjaman"><i class="fa-solid fa-hand-holding-dollar"></i> Pinjaman</a>
+      <a href="/anggota/cicilan"><i class="fa-solid fa-calendar-check"></i> Cicilan</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-info mb-2"><div class="fw-600" id="user-nama">Anggota</div><small id="user-email"></small></div>
+      <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div><h5>Dashboard</h5><small class="text-muted d-none d-md-block" id="tanggal-hari-ini"></small></div>
+      </div>
+      <div class="position-relative">
+        <button class="notif-btn" onclick="toggleNotif()">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-badge d-none" id="notif-count">0</span>
+        </button>
+        <div class="notif-dropdown" id="notif-dropdown">
+          <div class="notif-header d-flex justify-content-between align-items-center">
+            <span>Notifikasi</span>
+            <button class="btn btn-sm btn-link text-success p-0" onclick="bacaSemua(token)">Baca semua</button>
+          </div>
+          <div id="notif-list"><div class="notif-empty">Tidak ada notifikasi</div></div>
         </div>
-        <div class="sidebar-menu">
-            <div class="menu-label">Menu</div>
-            <a href="/anggota/dashboard" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="/anggota/simpanan"><i class="fa-solid fa-piggy-bank"></i> Simpanan</a>
-            <a href="/anggota/pinjaman"><i class="fa-solid fa-hand-holding-dollar"></i> Pinjaman</a>
-            <a href="/anggota/cicilan"><i class="fa-solid fa-calendar-check"></i> Cicilan</a>
-        </div>
-        <div class="sidebar-footer">
-            <div class="user-info mb-2">
-                <div class="fw-600" id="user-nama">Anggota</div>
-                <small id="user-email"></small>
-            </div>
-            <button class="btn-logout" onclick="logout()">
-                <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
-            </button>
-        </div>
+      </div>
     </div>
 
-    <!-- MAIN -->
-    <div class="main-content">
-        <div class="topbar">
-            <div>
-                <h5>Dashboard</h5>
-                <small class="text-muted" id="tanggal-hari-ini"></small>
-            </div>
-            <div class="position-relative">
-                <button class="notif-btn" onclick="toggleNotif()">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="notif-badge d-none" id="notif-count">0</span>
-                </button>
-                <div class="notif-dropdown" id="notif-dropdown">
-                    <div class="notif-header d-flex justify-content-between align-items-center">
-                        <span>Notifikasi</span>
-                        <button class="btn btn-sm btn-link text-success p-0" onclick="bacaSemua()">Tandai semua
-                            dibaca</button>
-                    </div>
-                    <div id="notif-list">
-                        <div class="notif-empty">Tidak ada notifikasi</div>
-                    </div>
-                </div>
-            </div>
+    <div class="page-content">
+      <div class="hero-card">
+        <h6>Selamat datang,</h6>
+        <h2 id="hero-nama">-</h2>
+        <div class="no-anggota"><i class="fa-solid fa-id-card me-1"></i><span id="hero-no-anggota">-</span></div>
+        <div class="hero-actions">
+          <a href="/anggota/simpanan" class="hero-btn"><i class="fa-solid fa-plus"></i>Setor</a>
+          <a href="/anggota/pinjaman" class="hero-btn"><i class="fa-solid fa-file-circle-plus"></i>Pinjaman</a>
+          <a href="/anggota/cicilan" class="hero-btn"><i class="fa-solid fa-calendar-check"></i>Cicilan</a>
         </div>
+      </div>
 
-        <div class="page-content">
-            <!-- HERO CARD -->
-            <div class="hero-card">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h6>Selamat datang,</h6>
-                        <h2 id="hero-nama">-</h2>
-                        <div class="no-anggota"><i class="fa-solid fa-id-card me-1"></i><span
-                                id="hero-no-anggota">-</span></div>
-                        <div class="hero-actions">
-                            <a href="/anggota/simpanan" class="hero-btn"><i class="fa-solid fa-plus"></i>Setor
-                                Simpanan</a>
-                            <a href="/anggota/pinjaman" class="hero-btn"><i
-                                    class="fa-solid fa-file-circle-plus"></i>Ajukan Pinjaman</a>
-                            <a href="/anggota/cicilan" class="hero-btn"><i class="fa-solid fa-calendar-check"></i>Bayar
-                                Cicilan</a>
-                        </div>
-                    </div>
-                    <div class="col-auto d-none d-md-block">
-                        <div style="font-size:5rem;opacity:0.2;">
-                            <i class="fa-solid fa-building-columns"></i>
-                        </div>
-                    </div>
-                </div>
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div><p>Total Saldo</p><h4 id="stat-saldo" class="text-success">-</h4><small class="text-muted">Simpanan bersih</small></div>
+              <div class="stat-icon" style="background:#e8f5ee;color:#1a6b3c;"><i class="fa-solid fa-piggy-bank"></i></div>
             </div>
-
-            <!-- STAT CARDS -->
-            <div class="row g-3 mb-4">
-                <div class="col-md-4">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p>Total Saldo</p>
-                                <h4 id="stat-saldo" class="text-success">-</h4>
-                                <small class="text-muted">Simpanan bersih</small>
-                            </div>
-                            <div class="stat-icon" style="background:#e8f5ee;color:#1a6b3c;">
-                                <i class="fa-solid fa-piggy-bank"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p>Pinjaman Aktif</p>
-                                <h4 id="stat-pinjaman">-</h4>
-                                <small class="text-muted" id="stat-pinjaman-info">-</small>
-                            </div>
-                            <div class="stat-icon" style="background:#fff3e0;color:#f57c00;">
-                                <i class="fa-solid fa-hand-holding-dollar"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p>Cicilan Belum Bayar</p>
-                                <h4 id="stat-cicilan">-</h4>
-                                <small class="text-muted">Tagihan aktif</small>
-                            </div>
-                            <div class="stat-icon" style="background:#e8f0ff;color:#3b5bdb;">
-                                <i class="fa-solid fa-calendar-check"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-3 mb-4">
-                <!-- CICILAN MENDATANG -->
-                <div class="col-lg-6">
-                    <div class="info-card">
-                        <h6><i class="fa-solid fa-clock me-2 text-warning"></i>Cicilan Mendatang</h6>
-                        <div id="cicilan-list">
-                            <div class="text-center text-muted py-3">Memuat...</div>
-                        </div>
-                        <a href="/anggota/cicilan" class="btn btn-sm btn-outline-success w-100 mt-2">
-                            Lihat Semua Cicilan <i class="fa-solid fa-arrow-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- RIWAYAT SIMPANAN -->
-                <div class="col-lg-6">
-                    <div class="info-card">
-                        <h6><i class="fa-solid fa-clock-rotate-left me-2 text-success"></i>Riwayat Simpanan Terbaru</h6>
-                        <div id="riwayat-list">
-                            <div class="text-center text-muted py-3">Memuat...</div>
-                        </div>
-                        <a href="/anggota/simpanan" class="btn btn-sm btn-outline-success w-100 mt-2">
-                            Lihat Semua Simpanan <i class="fa-solid fa-arrow-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CHART -->
-            <div class="chart-card">
-                <h6><i class="fa-solid fa-chart-line me-2 text-success"></i>Grafik Simpanan 6 Bulan Terakhir</h6>
-                <canvas id="chartSimpanan" height="80"></canvas>
-            </div>
+          </div>
         </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div><p>Pinjaman Aktif</p><h4 id="stat-pinjaman">-</h4><small class="text-muted" id="stat-pinjaman-info">-</small></div>
+              <div class="stat-icon" style="background:#fff3e0;color:#f57c00;"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div><p>Cicilan Belum Bayar</p><h4 id="stat-cicilan">-</h4><small class="text-muted">Tagihan aktif</small></div>
+              <div class="stat-icon" style="background:#e8f0ff;color:#3b5bdb;"><i class="fa-solid fa-calendar-check"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+          <div class="info-card">
+            <h6><i class="fa-solid fa-clock me-2 text-warning"></i>Cicilan Mendatang</h6>
+            <div id="cicilan-list"><div class="text-center text-muted py-3">Memuat...</div></div>
+            <a href="/anggota/cicilan" class="btn btn-sm btn-outline-success w-100 mt-2">Lihat Semua <i class="fa-solid fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="info-card">
+            <h6><i class="fa-solid fa-clock-rotate-left me-2 text-success"></i>Riwayat Simpanan</h6>
+            <div id="riwayat-list"><div class="text-center text-muted py-3">Memuat...</div></div>
+            <a href="/anggota/simpanan" class="btn btn-sm btn-outline-success w-100 mt-2">Lihat Semua <i class="fa-solid fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h6><i class="fa-solid fa-chart-line me-2 text-success"></i>Grafik Simpanan 6 Bulan</h6>
+        <canvas id="chartSimpanan" height="100"></canvas>
+      </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!token || !user || user.role !== 'anggota') window.location.href = '/';
+    document.getElementById('user-nama').textContent = user?.nama || 'Anggota';
+    document.getElementById('user-email').textContent = user?.email || '';
+    document.getElementById('hero-nama').textContent = user?.nama || '-';
+    document.getElementById('tanggal-hari-ini').textContent = new Date().toLocaleDateString('id-ID', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-    <script>
-        const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user') || 'null');
-        if (!token || !user || user.role !== 'anggota') window.location.href = '/';
+    const socket = io();
+    socket.emit('join', user.id);
+    socket.on('notifikasi', (data) => {
+      loadNotifikasi(token);
+      Swal.fire({toast:true,position:'top-end',icon:'info',title:data.pesan,showConfirmButton:false,timer:4000});
+    });
 
-        document.getElementById('user-nama').textContent = user?.nama || 'Anggota';
-        document.getElementById('user-email').textContent = user?.email || '';
-        document.getElementById('hero-nama').textContent = user?.nama || '-';
-        document.getElementById('tanggal-hari-ini').textContent = new Date().toLocaleDateString('id-ID', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-        });
+    async function loadDashboard() {
+      try {
+        const res = await fetch('/api/dashboard/anggota', { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        document.getElementById('hero-no-anggota').textContent = data.anggota.no_anggota;
+        document.getElementById('stat-saldo').textContent = rupiah(data.saldo);
+        if (data.pinjaman_aktif) {
+          document.getElementById('stat-pinjaman').textContent = rupiah(data.pinjaman_aktif.jumlah);
+          document.getElementById('stat-pinjaman-info').textContent = `Tenor ${data.pinjaman_aktif.tenor} bulan`;
+        } else {
+          document.getElementById('stat-pinjaman').textContent = 'Tidak ada';
+          document.getElementById('stat-pinjaman-info').textContent = 'Belum ada pinjaman aktif';
+        }
+        document.getElementById('stat-cicilan').textContent = data.cicilan_belum_bayar.length + ' tagihan';
 
-        const rupiah = (n) => 'Rp ' + Number(n).toLocaleString('id-ID');
+        const cicilanList = document.getElementById('cicilan-list');
+        if (data.cicilan_belum_bayar.length === 0) {
+          cicilanList.innerHTML = '<div class="text-center text-muted py-3"><i class="fa-solid fa-circle-check text-success me-2"></i>Tidak ada cicilan mendatang</div>';
+        } else {
+          cicilanList.innerHTML = data.cicilan_belum_bayar.map(c => {
+            const isLate = new Date(c.tanggal_jatuh_tempo) < new Date();
+            return `<div class="cicilan-item ${isLate?'terlambat':''}">
+              <div><div style="font-size:0.875rem;font-weight:600;">Cicilan ke-${c.ke}</div><small class="text-muted">${new Date(c.tanggal_jatuh_tempo).toLocaleDateString('id-ID')}</small></div>
+              <div class="text-end"><div style="font-weight:700;">${rupiah(c.jumlah)}</div><span class="badge ${isLate?'bg-danger':'bg-warning'}">${isLate?'Terlambat':'Belum bayar'}</span></div>
+            </div>`;
+          }).join('');
+        }
 
-        // Socket.io
-        const socket = io();
-        socket.emit('join', user.id);
-        socket.on('notifikasi', (data) => {
-            loadNotifikasi();
-            Swal.fire({
-                toast: true, position: 'top-end', icon: 'info',
-                title: data.pesan, showConfirmButton: false, timer: 4000
-            });
-        });
-
-        async function loadDashboard() {
-            try {
-                const res = await fetch('/api/dashboard/anggota', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await res.json();
-
-                // Hero
-                document.getElementById('hero-no-anggota').textContent = data.anggota.no_anggota;
-
-                // Stats
-                document.getElementById('stat-saldo').textContent = rupiah(data.saldo);
-
-                if (data.pinjaman_aktif) {
-                    document.getElementById('stat-pinjaman').textContent = rupiah(data.pinjaman_aktif.jumlah);
-                    document.getElementById('stat-pinjaman-info').textContent = `Tenor ${data.pinjaman_aktif.tenor} bulan`;
-                } else {
-                    document.getElementById('stat-pinjaman').textContent = 'Tidak ada';
-                    document.getElementById('stat-pinjaman-info').textContent = 'Belum ada pinjaman aktif';
-                }
-
-                document.getElementById('stat-cicilan').textContent = data.cicilan_belum_bayar.length + ' tagihan';
-
-                // Cicilan mendatang
-                const cicilanList = document.getElementById('cicilan-list');
-                if (data.cicilan_belum_bayar.length === 0) {
-                    cicilanList.innerHTML = '<div class="text-center text-muted py-3"><i class="fa-solid fa-circle-check text-success me-2"></i>Tidak ada cicilan mendatang</div>';
-                } else {
-                    cicilanList.innerHTML = data.cicilan_belum_bayar.map(c => {
-                        const isLate = new Date(c.tanggal_jatuh_tempo) < new Date();
-                        return `
-              <div class="cicilan-item ${isLate ? 'terlambat' : ''}">
-                <div>
-                  <div style="font-size:0.875rem;font-weight:600;">Cicilan ke-${c.ke}</div>
-                  <small class="text-muted">${new Date(c.tanggal_jatuh_tempo).toLocaleDateString('id-ID')}</small>
-                </div>
-                <div class="text-end">
-                  <div style="font-weight:700;">${rupiah(c.jumlah)}</div>
-                  <span class="badge ${isLate ? 'bg-danger' : 'bg-warning'}">${isLate ? 'Terlambat' : 'Belum bayar'}</span>
-                </div>
-              </div>
-            `;
-                    }).join('');
-                }
-
-                // Riwayat simpanan
-                const riwayatList = document.getElementById('riwayat-list');
-                if (data.riwayat_simpanan.length === 0) {
-                    riwayatList.innerHTML = '<div class="text-center text-muted py-3">Belum ada transaksi simpanan</div>';
-                } else {
-                    riwayatList.innerHTML = data.riwayat_simpanan.map(s => `
+        const riwayatList = document.getElementById('riwayat-list');
+        if (data.riwayat_simpanan.length === 0) {
+          riwayatList.innerHTML = '<div class="text-center text-muted py-3">Belum ada transaksi</div>';
+        } else {
+          riwayatList.innerHTML = data.riwayat_simpanan.map(s => `
             <div class="riwayat-item">
               <div class="d-flex align-items-center gap-2">
-                <div style="width:32px;height:32px;border-radius:8px;background:${s.jenis === 'setor' ? '#e8f5ee' : '#fde8e8'};
-                  display:flex;align-items:center;justify-content:center;color:${s.jenis === 'setor' ? '#1a6b3c' : '#dc3545'};">
-                  <i class="fa-solid fa-${s.jenis === 'setor' ? 'arrow-down' : 'arrow-up'}" style="font-size:0.75rem;"></i>
+                <div style="width:32px;height:32px;border-radius:8px;background:${s.jenis==='setor'?'#e8f5ee':'#fde8e8'};display:flex;align-items:center;justify-content:center;color:${s.jenis==='setor'?'#1a6b3c':'#dc3545'};flex-shrink:0;">
+                  <i class="fa-solid fa-${s.jenis==='setor'?'arrow-down':'arrow-up'}" style="font-size:0.75rem;"></i>
                 </div>
                 <div>
-                  <div style="font-size:0.875rem;font-weight:600;">${s.keterangan || (s.jenis === 'setor' ? 'Setor Simpanan' : 'Tarik Simpanan')}</div>
+                  <div style="font-size:0.8rem;font-weight:600;">${s.keterangan||(s.jenis==='setor'?'Setor':'Tarik')}</div>
                   <small class="text-muted">${new Date(s.tanggal).toLocaleDateString('id-ID')}</small>
                 </div>
               </div>
-              <div style="font-weight:700;color:${s.jenis === 'setor' ? '#1a6b3c' : '#dc3545'};">
-                ${s.jenis === 'tarik' ? '-' : '+'}${rupiah(s.jumlah)}
-              </div>
-            </div>
-          `).join('');
-                }
-
-                // Chart
-                if (data.grafik_simpanan.length > 0) {
-                    new Chart(document.getElementById('chartSimpanan'), {
-                        type: 'bar',
-                        data: {
-                            labels: data.grafik_simpanan.map(d => d.bulan),
-                            datasets: [
-                                { label: 'Setor', data: data.grafik_simpanan.map(d => d.setor), backgroundColor: 'rgba(26,107,60,0.8)', borderRadius: 6 },
-                                { label: 'Tarik', data: data.grafik_simpanan.map(d => d.tarik), backgroundColor: 'rgba(220,53,69,0.6)', borderRadius: 6 }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rp ' + v.toLocaleString('id-ID') } } }
-                        }
-                    });
-                } else {
-                    document.getElementById('chartSimpanan').parentElement.innerHTML += '<p class="text-center text-muted">Belum ada data transaksi</p>';
-                }
-
-            } catch (err) { console.error(err); }
+              <div style="font-weight:700;color:${s.jenis==='setor'?'#1a6b3c':'#dc3545'};font-size:0.875rem;">${s.jenis==='tarik'?'-':'+'}${rupiah(s.jumlah)}</div>
+            </div>`).join('');
         }
 
-        async function loadNotifikasi() {
-            try {
-                const res = await fetch('/api/notifikasi', { headers: { 'Authorization': `Bearer ${token}` } });
-                const data = await res.json();
-                const belumBaca = data.filter(n => !n.is_read).length;
-                const badge = document.getElementById('notif-count');
-                if (belumBaca > 0) { badge.textContent = belumBaca; badge.classList.remove('d-none'); }
-                else badge.classList.add('d-none');
-
-                const list = document.getElementById('notif-list');
-                if (data.length === 0) {
-                    list.innerHTML = '<div class="notif-empty">Tidak ada notifikasi</div>';
-                } else {
-                    list.innerHTML = data.slice(0, 8).map(n => `
-            <div class="notif-item ${!n.is_read ? 'unread' : ''}">
-              <div>${n.pesan}</div>
-              <small class="text-muted">${new Date(n.created_at).toLocaleString('id-ID')}</small>
-            </div>
-          `).join('');
-                }
-            } catch (err) { console.error(err); }
+        if (data.grafik_simpanan.length > 0) {
+          new Chart(document.getElementById('chartSimpanan'), {
+            type:'bar',
+            data:{labels:data.grafik_simpanan.map(d=>d.bulan),datasets:[
+              {label:'Setor',data:data.grafik_simpanan.map(d=>d.setor),backgroundColor:'rgba(26,107,60,0.8)',borderRadius:6},
+              {label:'Tarik',data:data.grafik_simpanan.map(d=>d.tarik),backgroundColor:'rgba(220,53,69,0.6)',borderRadius:6}
+            ]},
+            options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true,ticks:{callback:v=>'Rp '+v.toLocaleString('id-ID')}}}}
+          });
         }
+      } catch(err) { console.error(err); }
+    }
 
-        async function bacaSemua() {
-            await fetch('/api/notifikasi/baca-semua', { method: 'PUT', headers: { 'Authorization': `Bearer ${token}` } });
-            loadNotifikasi();
-        }
-
-        function toggleNotif() {
-            document.getElementById('notif-dropdown').classList.toggle('show');
-        }
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.notif-btn') && !e.target.closest('.notif-dropdown')) {
-                document.getElementById('notif-dropdown').classList.remove('show');
-            }
-        });
-
-        function logout() {
-            Swal.fire({
-                title: 'Logout?', text: 'Anda akan keluar dari sistem.',
-                icon: 'question', showCancelButton: true,
-                confirmButtonColor: '#dc3545', cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Logout', cancelButtonText: 'Batal'
-            }).then(result => {
-                if (result.isConfirmed) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = '/';
-                }
-            });
-        }
-
-        loadDashboard();
-        loadNotifikasi();
-    </script>
+    loadDashboard();
+    loadNotifikasi(token);
+  </script>
 </body>
-
 </html>
