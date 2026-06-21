@@ -115,6 +115,34 @@
     </div>
   </div>
 
+  <!-- MODAL RESET PASSWORD -->
+  <div class="modal fade" id="modalResetPw" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fa-solid fa-lock text-warning me-2"></i>Reset Password Anggota</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="reset-pw-id">
+          <p class="text-muted" style="font-size:0.875rem;">Reset password untuk: <strong id="reset-pw-nama"></strong></p>
+          <div class="mb-3">
+            <label class="form-label">Password Baru</label>
+            <input type="password" class="form-control" id="input-pw-baru" placeholder="Minimal 6 karakter">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Konfirmasi Password</label>
+            <input type="password" class="form-control" id="input-pw-konfirmasi" placeholder="Ulangi password baru">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn" style="background:linear-gradient(135deg,#f57c00,#ffa726);border:none;border-radius:8px;color:white;padding:0.6rem 1.5rem;font-weight:600;font-family:Poppins,sans-serif;" onclick="prosesResetPw()"><i class="fa-solid fa-lock me-1"></i>Reset Password</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL DETAIL -->
   <div class="modal fade" id="modalDetail" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -178,6 +206,7 @@
               <button class="btn-action btn-detail" onclick="showDetail(${a.id})" title="Detail"><i class="fa-solid fa-eye"></i></button>
               <button class="btn-action btn-edit" onclick="showModalEdit(${a.id})" title="Edit"><i class="fa-solid fa-pen"></i></button>
               <button class="btn-action btn-delete" onclick="hapusAnggota(${a.id},'${a.nama}')" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+              <button class="btn-action" style="background:#fff3e0;color:#f57c00;" onclick="showModalResetPw(${a.id},'${a.nama}')" title="Reset Password"><i class="fa-solid fa-lock"></i></button>
             </div>
           </td>
         </tr>
@@ -277,3 +306,32 @@
   </script>
 </body>
 </html>
+<script>
+  function showModalResetPw(id, nama) {
+    document.getElementById('reset-pw-id').value = id;
+    document.getElementById('reset-pw-nama').textContent = nama;
+    document.getElementById('input-pw-baru').value = '';
+    document.getElementById('input-pw-konfirmasi').value = '';
+    new bootstrap.Modal(document.getElementById('modalResetPw')).show();
+  }
+
+  async function prosesResetPw() {
+    const id = document.getElementById('reset-pw-id').value;
+    const password_baru = document.getElementById('input-pw-baru').value;
+    const konfirmasi = document.getElementById('input-pw-konfirmasi').value;
+    if (!password_baru || password_baru.length < 6) return Swal.fire('Peringatan','Password minimal 6 karakter!','warning');
+    if (password_baru !== konfirmasi) return Swal.fire('Peringatan','Konfirmasi password tidak cocok!','warning');
+    try {
+      const res = await fetch(`/api/anggota/${id}/reset-password`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ password_baru })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        bootstrap.Modal.getInstance(document.getElementById('modalResetPw')).hide();
+        Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500, showConfirmButton: false });
+      } else Swal.fire('Gagal', data.message, 'error');
+    } catch(err) { Swal.fire('Error','Terjadi kesalahan server.','error'); }
+  }
+</script>
