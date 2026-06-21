@@ -1,0 +1,283 @@
+/* ================================================
+   KOPERASI DIGITAL - Global Shared CSS
+   ================================================ */
+
+* { font-family: 'Poppins', sans-serif; font-style: normal; }
+body { background: #f0f4f8; }
+
+/* ================================================
+   SIDEBAR
+   ================================================ */
+.sidebar {
+  width: 260px; min-height: 100vh;
+  background: linear-gradient(180deg, #1a6b3c 0%, #0f4a28 100%);
+  position: fixed; top: 0; left: 0; z-index: 1000;
+  display: flex; flex-direction: column;
+  transition: transform 0.3s ease;
+}
+
+.sidebar.hidden { transform: translateX(-260px); }
+
+.sidebar-brand { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-brand .brand-icon {
+  width: 42px; height: 42px; background: rgba(255,255,255,0.2);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sidebar-brand h6 { color: white; font-weight: 700; margin: 0; font-size: 0.95rem; }
+.sidebar-brand small { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+
+.sidebar-menu { padding: 1rem 0; flex: 1; overflow-y: auto; }
+.menu-label {
+  color: rgba(255,255,255,0.4); font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1px;
+  padding: 0.5rem 1.5rem; margin-top: 0.5rem;
+}
+.sidebar-menu a {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1.5rem; color: rgba(255,255,255,0.7);
+  text-decoration: none; font-size: 0.875rem; font-weight: 500;
+  transition: all 0.2s; border-left: 3px solid transparent;
+}
+.sidebar-menu a:hover, .sidebar-menu a.active {
+  color: white; background: rgba(255,255,255,0.1); border-left-color: #4ade80;
+}
+.sidebar-menu a i { width: 18px; text-align: center; }
+
+.sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+.sidebar-footer .user-info { color: white; font-size: 0.8rem; }
+.sidebar-footer .user-info small { color: rgba(255,255,255,0.5); }
+
+.btn-logout {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: white; border-radius: 8px; padding: 0.4rem 0.8rem;
+  font-size: 0.8rem; cursor: pointer; transition: all 0.2s; width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+.btn-logout:hover { background: rgba(220,53,69,0.3); border-color: #dc3545; }
+
+/* ================================================
+   MAIN CONTENT
+   ================================================ */
+.main-content {
+  margin-left: 260px; min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+.main-content.expanded { margin-left: 0; }
+
+/* ================================================
+   TOPBAR
+   ================================================ */
+.topbar {
+  background: white; padding: 1rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; gap: 1rem;
+}
+.topbar h5 { margin: 0; font-weight: 700; color: #1a1a2e; font-size: 1rem; }
+
+/* HAMBURGER */
+.hamburger {
+  background: #f0f4f8; border: none; border-radius: 10px;
+  width: 40px; height: 40px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; color: #444;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.hamburger:hover { background: #e2e8f0; }
+
+/* OVERLAY */
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 999;
+}
+.sidebar-overlay.show { display: block; }
+
+/* ================================================
+   NOTIFIKASI
+   ================================================ */
+.notif-btn {
+  position: relative; background: #f0f4f8; border: none;
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #666; cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+}
+.notif-btn:hover { background: #e2e8f0; }
+.notif-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: #dc3545; color: white; font-size: 0.65rem;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-weight: 700;
+}
+.notif-dropdown {
+  position: absolute; top: 50px; right: 0; width: 300px;
+  background: white; border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15); z-index: 999; display: none;
+}
+.notif-dropdown.show { display: block; }
+.notif-header { padding: 1rem; border-bottom: 1px solid #f0f4f8; font-weight: 600; font-size: 0.9rem; }
+.notif-item { padding: 0.75rem 1rem; border-bottom: 1px solid #f8f9fa; font-size: 0.8rem; cursor: pointer; }
+.notif-item:hover { background: #f8fafc; }
+.notif-item.unread { background: #f0f7ff; }
+.notif-empty { padding: 2rem; text-align: center; color: #aaa; font-size: 0.85rem; }
+
+/* ================================================
+   PAGE CONTENT
+   ================================================ */
+.page-content { padding: 1.5rem; }
+
+/* ================================================
+   CARDS
+   ================================================ */
+.card-main {
+  background: white; border-radius: 16px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 1.5rem;
+}
+.card-header-custom {
+  padding: 1.25rem 1.5rem; border-bottom: 1px solid #f0f4f8;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+}
+.card-header-custom h6 { margin: 0; font-weight: 700; color: #1a1a2e; }
+
+/* ================================================
+   TABLES
+   ================================================ */
+.table th {
+  font-size: 0.78rem; font-weight: 600; color: #888;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  background: #f8fafc; border-bottom: 2px solid #f0f4f8; padding: 0.8rem 1.5rem;
+  white-space: nowrap;
+}
+.table td { font-size: 0.875rem; vertical-align: middle; padding: 0.8rem 1.5rem; }
+.table tbody tr:hover { background: #f8fafc; }
+
+/* ================================================
+   BADGES
+   ================================================ */
+.badge { font-size: 0.75rem; padding: 0.4rem 0.7rem; border-radius: 6px; font-weight: 500; }
+
+/* ================================================
+   BUTTONS
+   ================================================ */
+.btn-action {
+  width: 32px; height: 32px; border-radius: 8px; border: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s; font-size: 0.8rem; flex-shrink: 0;
+}
+.btn-edit { background: #e8f5ee; color: #1a6b3c; }
+.btn-edit:hover { background: #1a6b3c; color: white; }
+.btn-delete { background: #fde8e8; color: #dc3545; }
+.btn-delete:hover { background: #dc3545; color: white; }
+.btn-detail { background: #e8f0ff; color: #3b5bdb; }
+.btn-detail:hover { background: #3b5bdb; color: white; }
+.btn-approve { background: #e8f5ee; color: #1a6b3c; }
+.btn-approve:hover { background: #1a6b3c; color: white; }
+.btn-reject { background: #fde8e8; color: #dc3545; }
+.btn-reject:hover { background: #dc3545; color: white; }
+
+.btn-primary-green {
+  background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+  border: none; border-radius: 8px; color: white;
+  padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+}
+.btn-primary-green:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,107,60,0.3); }
+
+/* ================================================
+   FORMS
+   ================================================ */
+.form-label { font-weight: 500; color: #444; font-size: 0.875rem; }
+.form-control, .form-select {
+  border-radius: 10px; border: 2px solid #e8e8e8;
+  padding: 0.65rem 1rem; font-size: 0.875rem;
+  font-family: 'Poppins', sans-serif; transition: all 0.3s;
+}
+.form-control:focus, .form-select:focus {
+  border-color: #2d9e5f; box-shadow: 0 0 0 0.2rem rgba(45,158,95,0.15);
+}
+
+/* ================================================
+   MODAL
+   ================================================ */
+.modal-content { border-radius: 16px; border: none; }
+.modal-header { border-bottom: 1px solid #f0f4f8; padding: 1.25rem 1.5rem; }
+.modal-header .modal-title { font-weight: 700; font-size: 1rem; }
+.modal-footer { border-top: 1px solid #f0f4f8; }
+.btn-save {
+  background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+  border: none; border-radius: 8px; color: white;
+  padding: 0.6rem 1.5rem; font-weight: 600; font-family: 'Poppins', sans-serif;
+}
+
+/* ================================================
+   AVATAR
+   ================================================ */
+.avatar {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+}
+
+/* ================================================
+   FILTER TABS
+   ================================================ */
+.filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.filter-tab {
+  padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid #e8e8e8;
+  background: white; font-size: 0.8rem; font-weight: 500; cursor: pointer;
+  transition: all 0.2s; color: #666; font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+}
+.filter-tab:hover { border-color: #2d9e5f; color: #1a6b3c; }
+.filter-tab.active { background: #1a6b3c; border-color: #1a6b3c; color: white; }
+
+/* ================================================
+   SEARCH BOX
+   ================================================ */
+.search-box {
+  border: 2px solid #e8e8e8; border-radius: 10px;
+  padding: 0.5rem 1rem; font-size: 0.875rem;
+  transition: all 0.3s; font-family: 'Poppins', sans-serif;
+  width: 200px;
+}
+.search-box:focus { outline: none; border-color: #2d9e5f; }
+
+/* ================================================
+   EMPTY STATE
+   ================================================ */
+.empty-state { padding: 3rem; text-align: center; color: #aaa; }
+.empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; display: block; }
+
+/* ================================================
+   RESPONSIVE - TABLET (max 992px)
+   ================================================ */
+@media (max-width: 992px) {
+  .sidebar { transform: translateX(-260px); }
+  .sidebar.show { transform: translateX(0); }
+  .main-content { margin-left: 0; }
+  .search-box { width: 150px; }
+}
+
+/* ================================================
+   RESPONSIVE - MOBILE (max 768px)
+   ================================================ */
+@media (max-width: 768px) {
+  .page-content { padding: 1rem; }
+  .topbar { padding: 0.75rem 1rem; }
+  .card-header-custom { flex-direction: column; align-items: flex-start; }
+  .table th, .table td { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
+  .search-box { width: 100%; }
+  .filter-tabs { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0.25rem; }
+  .notif-dropdown { width: 280px; right: -50px; }
+}
+
+/* ================================================
+   RESPONSIVE - SMALL MOBILE (max 480px)
+   ================================================ */
+@media (max-width: 480px) {
+  .page-content { padding: 0.75rem; }
+  .card-header-custom { padding: 1rem; }
+  .table th, .table td { padding: 0.5rem 0.6rem; font-size: 0.75rem; }
+  .btn-action { width: 28px; height: 28px; font-size: 0.75rem; }
+}
