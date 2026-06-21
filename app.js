@@ -45,6 +45,9 @@ app.get('/anggota/simpanan', (req, res) => res.sendFile(path.join(__dirname, 'vi
 app.get('/anggota/pinjaman', (req, res) => res.sendFile(path.join(__dirname, 'views/anggota/pinjaman.html')));
 app.get('/anggota/cicilan', (req, res) => res.sendFile(path.join(__dirname, 'views/anggota/cicilan.html')));
 
+const dashboardRoutes = require('./routes/dashboardRoutes');
+app.use('/api/dashboard', dashboardRoutes);
+
 // Socket.io connection
 io.on('connection', (socket) => {
     console.log('User terhubung:', socket.id);
