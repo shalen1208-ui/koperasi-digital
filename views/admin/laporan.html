@@ -25,15 +25,7 @@
     .tab-btn.active{background:#1a6b3c;border-color:#1a6b3c;color:white;}
     .tab-content-custom{display:none;}
     .tab-content-custom.active{display:block;}
-    .btn-export{background:white;border:2px solid #1a6b3c;border-radius:8px;color:#1a6b3c;padding:0.4rem 1rem;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Poppins',sans-serif;}
-    .btn-export:hover{background:#1a6b3c;color:white;}
     @media(max-width:768px){.hide-mobile{display:none!important;}.summary-card h5{font-size:0.875rem;}}
-    @media print {
-      .sidebar, .topbar, .tab-nav, .btn-export, .filter-row { display: none !important; }
-      .main-content { margin-left: 0 !important; }
-      .page-content { padding: 0 !important; }
-      .card-main, .chart-card, .summary-card { box-shadow: none !important; break-inside: avoid; }
-    }
   </style>
 </head>
 <body>
@@ -63,7 +55,6 @@
         <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
         <div><h5>Laporan Keuangan</h5><small class="text-muted d-none d-md-block">Rekap transaksi koperasi</small></div>
       </div>
-      <button class="btn-export" onclick="exportPDF()"><i class="fa-solid fa-file-pdf me-1"></i>Export PDF</button>
     </div>
 
     <div class="page-content" id="print-area">
@@ -255,19 +246,6 @@
       document.getElementById(`tab-${tab}`).classList.add('active');
     }
 
-    function exportPDF() {
-      Swal.fire({
-        title: 'Export PDF',
-        text: 'Halaman akan dibuka dalam mode print. Pilih "Save as PDF" di dialog print.',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#1a6b3c',
-        confirmButtonText: 'Print / Save PDF',
-        cancelButtonText: 'Batal'
-      }).then(result => {
-        if (result.isConfirmed) window.print();
-      });
-    }
 
     loadSummary(); loadSimpanan(); loadPinjaman(); loadCicilan();
   </script>
