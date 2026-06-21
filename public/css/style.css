@@ -281,3 +281,11 @@ body { background: #f0f4f8; }
   .table th, .table td { padding: 0.5rem 0.6rem; font-size: 0.75rem; }
   .btn-action { width: 28px; height: 28px; font-size: 0.75rem; }
 }
+
+/* Desktop - sidebar selalu tampil, hamburger sembunyi */
+@media (min-width: 993px) {
+  .sidebar { transform: translateX(0) !important; }
+  .main-content { margin-left: 260px !important; }
+  .hamburger { display: none !important; }
+  .sidebar-overlay { display: none !important; }
+}
