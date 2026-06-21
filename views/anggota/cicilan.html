@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cicilan - Koperasi Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <style>
+    * { font-family: 'Poppins', sans-serif; font-style: normal; }
+    body { background: #f0f4f8; }
+    .sidebar {
+      width: 260px; min-height: 100vh;
+      background: linear-gradient(180deg, #1a6b3c 0%, #0f4a28 100%);
+      position: fixed; top: 0; left: 0; z-index: 1000;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-brand { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-brand .brand-icon {
+      width: 42px; height: 42px; background: rgba(255,255,255,0.2);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    }
+    .sidebar-brand h6 { color: white; font-weight: 700; margin: 0; font-size: 0.95rem; }
+    .sidebar-brand small { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+    .sidebar-menu { padding: 1rem 0; flex: 1; }
+    .menu-label {
+      color: rgba(255,255,255,0.4); font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1px; padding: 0.5rem 1.5rem; margin-top: 0.5rem;
+    }
+    .sidebar-menu a {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1.5rem; color: rgba(255,255,255,0.7);
+      text-decoration: none; font-size: 0.875rem; font-weight: 500;
+      transition: all 0.2s; border-left: 3px solid transparent;
+    }
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      color: white; background: rgba(255,255,255,0.1); border-left-color: #4ade80;
+    }
+    .sidebar-menu a i { width: 18px; text-align: center; }
+    .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-footer .user-info { color: white; font-size: 0.8rem; }
+    .sidebar-footer .user-info small { color: rgba(255,255,255,0.5); }
+    .btn-logout {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: white; border-radius: 8px; padding: 0.4rem 0.8rem;
+      font-size: 0.8rem; cursor: pointer; transition: all 0.2s; width: 100%;
+    }
+    .btn-logout:hover { background: rgba(220,53,69,0.3); border-color: #dc3545; }
+    .main-content { margin-left: 260px; min-height: 100vh; }
+    .topbar {
+      background: white; padding: 1rem 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar h5 { margin: 0; font-weight: 700; color: #1a1a2e; }
+    .page-content { padding: 1.5rem; }
+
+    .progress-card {
+      background: white; border-radius: 16px; padding: 1.5rem;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05); margin-bottom: 1.5rem;
+    }
+    .progress-card h6 { font-weight: 700; color: #1a1a2e; margin-bottom: 1rem; }
+    .progress { height: 10px; border-radius: 10px; background: #f0f4f8; }
+    .progress-bar { border-radius: 10px; background: linear-gradient(90deg, #1a6b3c, #2d9e5f); }
+
+    .summary-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .summary-item {
+      flex: 1; min-width: 120px; background: #f8fafc;
+      border-radius: 10px; padding: 0.75rem 1rem; text-align: center;
+    }
+    .summary-item p { color: #888; font-size: 0.75rem; margin: 0 0 0.2rem; }
+    .summary-item h5 { font-weight: 700; font-size: 1rem; margin: 0; }
+
+    .card-main {
+      background: white; border-radius: 16px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05); overflow: hidden;
+    }
+    .card-header-custom {
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid #f0f4f8;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .card-header-custom h6 { margin: 0; font-weight: 700; color: #1a1a2e; }
+
+    .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .filter-tab {
+      padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid #e8e8e8;
+      background: white; font-size: 0.8rem; font-weight: 500; cursor: pointer;
+      transition: all 0.2s; color: #666; font-family: 'Poppins', sans-serif; font-style: normal;
+    }
+    .filter-tab:hover { border-color: #2d9e5f; color: #1a6b3c; }
+    .filter-tab.active { background: #1a6b3c; border-color: #1a6b3c; color: white; }
+
+    .cicilan-card {
+      margin: 0 1.5rem 1rem; border-radius: 12px; border: 1px solid #f0f4f8;
+      overflow: hidden; transition: all 0.2s;
+    }
+    .cicilan-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .cicilan-card.terlambat { border-color: #fde8e8; }
+    .cicilan-card.lunas { border-color: #e8f5ee; opacity: 0.85; }
+
+    .cicilan-header {
+      padding: 0.875rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .cicilan-header.terlambat { background: #fff8f8; }
+    .cicilan-header.lunas { background: #f8fff8; }
+    .cicilan-header.belum_bayar { background: #fffdf0; }
+
+    .cicilan-ke {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+    }
+
+    .btn-bayar {
+      background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+      border: none; border-radius: 8px; color: white;
+      padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif;
+      font-style: normal; white-space: nowrap;
+    }
+    .btn-bayar:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(26,107,60,0.3); }
+
+    .badge { font-size: 0.75rem; padding: 0.4rem 0.7rem; border-radius: 6px; font-weight: 500; }
+
+    .empty-state { padding: 3rem; text-align: center; color: #aaa; }
+    .empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; display: block; }
+
+    .kosong-container {
+        text-align: center; padding: 3rem 2rem;
+        background: linear-gradient(135deg, #f0f7ff, #e8f0ff);
+        border-radius: 16px; border: 1px dashed #d0e4ff;
+        margin-bottom: 1.5rem;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .kosong-container i { font-size: 3.5rem; color: #3b5bdb; opacity: 0.4; display: block; margin-bottom: 1rem; }
+    .kosong-container h6 { color: #3b5bdb; font-weight: 700; margin-bottom: 0.5rem; font-style: normal; }
+    .kosong-container p { color: #888; font-size: 0.875rem; margin-bottom: 1.5rem; font-style: normal; }
+    .btn-ke-pinjaman i {
+        font-size: 0.875rem;
+        width: auto;
+        height: auto;
+    }
+    .btn-ke-pinjaman {
+        display: inline-block; background: #3b5bdb; border-radius: 8px;
+        color: white; padding: 0.6rem 1.5rem; font-weight: 600;
+        font-size: 0.875rem; text-decoration: none; font-style: normal;
+        font-family: 'Poppins', sans-serif; transition: all 0.2s;
+        width: fit-content; white-space: nowrap;
+    }
+    
+    .btn-ke-pinjaman:hover { background: #2f4abf; color: white; transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-brand d-flex align-items-center gap-3">
+      <div class="brand-icon">
+        <i class="fa-solid fa-building-columns text-white"></i>
+      </div>
+      <div>
+        <h6>Koperasi Digital</h6>
+        <small>Portal Anggota</small>
+      </div>
+    </div>
+    <div class="sidebar-menu">
+      <div class="menu-label">Menu</div>
+      <a href="/anggota/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="/anggota/simpanan"><i class="fa-solid fa-piggy-bank"></i> Simpanan</a>
+      <a href="/anggota/pinjaman"><i class="fa-solid fa-hand-holding-dollar"></i> Pinjaman</a>
+      <a href="/anggota/cicilan" class="active"><i class="fa-solid fa-calendar-check"></i> Cicilan</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-info mb-2">
+        <div class="fw-600" id="user-nama">Anggota</div>
+        <small id="user-email"></small>
+      </div>
+      <button class="btn-logout" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <h5>Cicilan</h5>
+        <small class="text-muted">Pantau dan bayar cicilan pinjaman Anda</small>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div id="progress-section"></div>
+
+      <div class="card-main">
+        <div class="card-header-custom">
+          <h6><i class="fa-solid fa-calendar-check me-2 text-success"></i>Daftar Cicilan</h6>
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterStatus('', this)">Semua</button>
+            <button class="filter-tab" onclick="filterStatus('belum_bayar', this)">Belum Bayar</button>
+            <button class="filter-tab" onclick="filterStatus('terlambat', this)">Terlambat</button>
+            <button class="filter-tab" onclick="filterStatus('lunas', this)">Lunas</button>
+          </div>
+        </div>
+        <div class="py-3" id="cicilan-container">
+          <div class="text-center text-muted py-4">Memuat...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+
+  <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!token || !user || user.role !== 'anggota') window.location.href = '/';
+
+    document.getElementById('user-nama').textContent = user?.nama || 'Anggota';
+    document.getElementById('user-email').textContent = user?.email || '';
+
+    const rupiah = (n) => 'Rp ' + Number(n).toLocaleString('id-ID');
+    let dataCicilan = [];
+
+    async function loadCicilan() {
+      try {
+        const res = await fetch('/api/cicilan', { headers: { 'Authorization': `Bearer ${token}` } });
+        dataCicilan = await res.json();
+
+        if (dataCicilan.length === 0) {
+          document.getElementById('progress-section').innerHTML = `
+            <div class="kosong-container">
+              <i class="fa-solid fa-calendar-xmark"></i>
+              <h6>Belum Ada Cicilan</h6>
+              <p>Anda belum memiliki pinjaman aktif.<br>Ajukan pinjaman terlebih dahulu.</p>
+              <a href="/anggota/pinjaman" class="btn-ke-pinjaman">
+                <i class="fa-solid fa-plus me-1"></i>Ajukan Pinjaman
+              </a>
+            </div>
+          `;
+          document.getElementById('cicilan-container').innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-calendar-check"></i>
+              <p>Tidak ada cicilan</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Hitung statistik
+        const totalCicilan = dataCicilan.length;
+        const lunas = dataCicilan.filter(c => c.status === 'lunas').length;
+        const terlambat = dataCicilan.filter(c => c.status === 'terlambat').length;
+        const belumBayar = dataCicilan.filter(c => c.status === 'belum_bayar').length;
+        const totalTagihan = dataCicilan.reduce((s, c) => s + Number(c.jumlah), 0);
+        const totalLunas = dataCicilan.filter(c => c.status === 'lunas').reduce((s, c) => s + Number(c.jumlah), 0);
+        const sisaTagihan = totalTagihan - totalLunas;
+        const persen = Math.round((lunas / totalCicilan) * 100);
+
+        document.getElementById('progress-section').innerHTML = `
+          <div class="progress-card">
+            <h6><i class="fa-solid fa-chart-pie me-2 text-success"></i>Progress Pelunasan</h6>
+            <div class="summary-row">
+              <div class="summary-item">
+                <p>Total Cicilan</p>
+                <h5>${totalCicilan} kali</h5>
+              </div>
+              <div class="summary-item">
+                <p>Sudah Lunas</p>
+                <h5 class="text-success">${lunas} kali</h5>
+              </div>
+              <div class="summary-item">
+                <p>Belum Bayar</p>
+                <h5 class="text-warning">${belumBayar} kali</h5>
+              </div>
+              <div class="summary-item">
+                <p>Terlambat</p>
+                <h5 class="text-danger">${terlambat} kali</h5>
+              </div>
+              <div class="summary-item">
+                <p>Sisa Tagihan</p>
+                <h5 class="text-danger" style="font-size:0.875rem;">${rupiah(sisaTagihan)}</h5>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mb-1" style="font-size:0.8rem;">
+              <span class="text-muted">Progress Pelunasan</span>
+              <span class="fw-600 text-success">${persen}%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" style="width:${persen}%"></div>
+            </div>
+          </div>
+        `;
+
+        renderCicilan(dataCicilan);
+      } catch (err) { console.error(err); }
+    }
+
+    function filterStatus(status, el) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      const filtered = status ? dataCicilan.filter(c => c.status === status) : dataCicilan;
+      renderCicilan(filtered);
+    }
+
+    function renderCicilan(data) {
+      const container = document.getElementById('cicilan-container');
+      if (data.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-calendar-check"></i>
+            <p>Tidak ada cicilan di kategori ini</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = data.map(c => {
+        const isLate = c.status === 'terlambat';
+        const isLunas = c.status === 'lunas';
+        const iconColor = isLunas ? '#1a6b3c' : isLate ? '#dc3545' : '#f57c00';
+        const bgColor = isLunas ? '#e8f5ee' : isLate ? '#fde8e8' : '#fff3e0';
+        const badgeClass = isLunas ? 'bg-success' : isLate ? 'bg-danger' : 'bg-warning';
+        const badgeLabel = isLunas ? '✓ Lunas' : isLate ? '⚠ Terlambat' : '⏳ Belum Bayar';
+
+        return `
+          <div class="cicilan-card ${c.status}">
+            <div class="cicilan-header ${c.status}">
+              <div class="d-flex align-items-center gap-3">
+                <div class="cicilan-ke" style="background:${bgColor};color:${iconColor};">${c.ke}</div>
+                <div>
+                  <div style="font-weight:600;font-size:0.875rem;">Cicilan ke-${c.ke}</div>
+                  <small class="text-muted">
+                    Jatuh tempo: ${new Date(c.tanggal_jatuh_tempo).toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'})}
+                  </small>
+                </div>
+              </div>
+              <div class="d-flex align-items-center gap-3">
+                <div class="text-end">
+                  <div style="font-weight:700;font-size:1rem;">${rupiah(c.jumlah)}</div>
+                  <span class="badge ${badgeClass}">${badgeLabel}</span>
+                </div>
+                ${!isLunas ? `
+                  <button class="btn-bayar" onclick="bayarCicilan(${c.id}, ${c.ke}, ${c.jumlah})">
+                    <i class="fa-solid fa-credit-card me-1"></i>Bayar
+                  </button>
+                ` : `
+                  <div style="color:#1a6b3c;font-size:1.5rem;">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </div>
+                `}
+              </div>
+            </div>
+            ${isLunas && c.tanggal_bayar ? `
+              <div style="padding:0.5rem 1.25rem;font-size:0.78rem;color:#888;background:#f8f9fa;border-top:1px solid #f0f4f8;">
+                <i class="fa-solid fa-clock me-1"></i>Dibayar pada: ${new Date(c.tanggal_bayar).toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'})}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function bayarCicilan(id, ke, jumlah) {
+      const result = await Swal.fire({
+        title: `Bayar Cicilan ke-${ke}?`,
+        html: `Jumlah yang harus dibayar: <strong>${rupiah(jumlah)}</strong>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#1a6b3c',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fa-solid fa-credit-card me-1"></i>Ya, Bayar!',
+        cancelButtonText: 'Batal'
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`/api/cicilan/${id}/bayar`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (res.ok) {
+            await Swal.fire({
+              icon: 'success', title: 'Pembayaran Berhasil!',
+              text: data.message, timer: 2000, showConfirmButton: false
+            });
+            loadCicilan();
+          } else {
+            Swal.fire('Gagal', data.message, 'error');
+          }
+        } catch (err) {
+          Swal.fire('Error', 'Terjadi kesalahan server.', 'error');
+        }
+      }
+    }
+
+    function logout() {
+      Swal.fire({
+        title: 'Logout?', text: 'Anda akan keluar dari sistem.',
+        icon: 'question', showCancelButton: true,
+        confirmButtonColor: '#dc3545', cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Logout', cancelButtonText: 'Batal'
+      }).then(result => {
+        if (result.isConfirmed) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+        }
+      });
+    }
+
+    loadCicilan();
+  </script>
+</body>
+</html>
