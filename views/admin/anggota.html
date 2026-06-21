@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Anggota - Koperasi Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+        }
+
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1a6b3c 0%, #0f4a28 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-brand .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-brand h6 {
+            color: white;
+            font-weight: 700;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-brand small {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+            flex: 1;
+        }
+
+        .menu-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.5rem 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #4ade80;
+        }
+
+        .sidebar-menu a i {
+            width: 18px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-footer .user-info {
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .sidebar-footer .user-info small {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn-logout:hover {
+            background: rgba(220, 53, 69, 0.3);
+            border-color: #dc3545;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar h5 {
+            margin: 0;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .page-content {
+            padding: 1.5rem;
+        }
+
+        .card-main {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header-custom h6 {
+            margin: 0;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .btn-tambah {
+            background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-tambah:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 107, 60, 0.3);
+        }
+
+        .search-box {
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            width: 250px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #2d9e5f;
+        }
+
+        .table th {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #f8fafc;
+            border-bottom: 2px solid #f0f4f8;
+            padding: 1rem 1.5rem;
+        }
+
+        .table td {
+            font-size: 0.875rem;
+            vertical-align: middle;
+            padding: 1rem 1.5rem;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.7rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+        }
+
+        .btn-edit {
+            background: #e8f5ee;
+            color: #1a6b3c;
+        }
+
+        .btn-edit:hover {
+            background: #1a6b3c;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #fde8e8;
+            color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-detail {
+            background: #e8f0ff;
+            color: #3b5bdb;
+        }
+
+        .btn-detail:hover {
+            background: #3b5bdb;
+            color: white;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .modal-content {
+            border-radius: 16px;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #f0f4f8;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-header .modal-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #f0f4f8;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #444;
+            font-size: 0.875rem;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            border: 2px solid #e8e8e8;
+            padding: 0.6rem 1rem;
+            font-size: 0.875rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #2d9e5f;
+            box-shadow: 0 0 0 0.2rem rgba(45, 158, 95, 0.15);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #1a6b3c, #2d9e5f);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            color: #aaa;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .saldo-badge {
+            background: #e8f5ee;
+            color: #1a6b3c;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-brand d-flex align-items-center gap-3">
+            <div class="brand-icon">
+                <i class="fa-solid fa-building-columns text-white"></i>
+            </div>
+            <div>
+                <h6>Koperasi Digital</h6>
+                <small>Panel Admin</small>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-label">Utama</div>
+            <a href="/admin/dashboard"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="/admin/anggota" class="active"><i class="fa-solid fa-users"></i> Manajemen Anggota</a>
+            <div class="menu-label">Keuangan</div>
+            <a href="/admin/pinjaman"><i class="fa-solid fa-hand-holding-dollar"></i> Pinjaman</a>
+            <a href="/admin/laporan"><i class="fa-solid fa-file-chart-column"></i> Laporan</a>
+        </div>
+        <div class="sidebar-footer">
+            <div class="user-info mb-2">
+                <div class="fw-600" id="admin-nama">Administrator</div>
+                <small id="admin-email">admin@koperasi.com</small>
+            </div>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+        <div class="topbar">
+            <div>
+                <h5>Manajemen Anggota</h5>
+                <small class="text-muted">Kelola data seluruh anggota koperasi</small>
+            </div>
+        </div>
+
+        <div class="page-content">
+            <div class="card-main">
+                <div class="card-header-custom">
+                    <h6><i class="fa-solid fa-users me-2 text-success"></i>Daftar Anggota</h6>
+                    <div class="d-flex gap-2 align-items-center">
+                        <input type="text" class="search-box" id="search-input" placeholder="🔍 Cari anggota..."
+                            oninput="filterAnggota()">
+                        <button class="btn-tambah" onclick="showModalTambah()">
+                            <i class="fa-solid fa-plus me-1"></i>Tambah Anggota
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Anggota</th>
+                                <th>No. Anggota</th>
+                                <th>Kontak</th>
+                                <th>Saldo</th>
+                                <th>Bergabung</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-anggota">
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">Memuat data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH/EDIT -->
+    <div class="modal fade" id="modalAnggota" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Tambah Anggota</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-id">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="input-nama" placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="mb-3" id="field-email">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="input-email" placeholder="Masukkan email">
+                    </div>
+                    <div class="mb-3" id="field-password">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="input-password"
+                            placeholder="Minimal 6 karakter">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">No. Telepon</label>
+                        <input type="tel" class="form-control" id="input-telepon" placeholder="Masukkan nomor telepon">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Alamat</label>
+                        <textarea class="form-control" id="input-alamat" rows="2"
+                            placeholder="Masukkan alamat"></textarea>
+                    </div>
+                    <div class="mb-3" id="field-status" style="display:none;">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="input-status">
+                            <option value="aktif">Aktif</option>
+                            <option value="nonaktif">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn-save btn" onclick="simpanAnggota()">
+                        <i class="fa-solid fa-floppy-disk me-1"></i>Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETAIL -->
+    <div class="modal fade" id="modalDetail" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Anggota</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detail-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!token || !user || user.role !== 'admin') window.location.href = '/';
+
+        document.getElementById('admin-nama').textContent = user?.nama || 'Admin';
+        document.getElementById('admin-email').textContent = user?.email || '';
+
+        const rupiah = (n) => 'Rp ' + Number(n).toLocaleString('id-ID');
+        let dataAnggota = [];
+        let modalInstance = null;
+
+        async function loadAnggota() {
+            try {
+                const res = await fetch('/api/anggota', { headers: { 'Authorization': `Bearer ${token}` } });
+                dataAnggota = await res.json();
+                renderAnggota(dataAnggota);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderAnggota(data) {
+            const tbody = document.getElementById('tbl-anggota');
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+          <i class="fa-solid fa-users"></i><p>Belum ada anggota terdaftar</p></div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = data.map(a => `
+        <tr>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar">${a.nama.charAt(0).toUpperCase()}</div>
+              <div>
+                <div class="fw-600 text-dark" style="font-size:0.875rem;">${a.nama}</div>
+                <small class="text-muted">${a.email}</small>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge bg-light text-dark">${a.no_anggota}</span></td>
+          <td><small>${a.no_telepon || '-'}</small></td>
+          <td><span class="saldo-badge">${rupiah(a.saldo || 0)}</span></td>
+          <td><small>${new Date(a.tanggal_bergabung).toLocaleDateString('id-ID')}</small></td>
+          <td><span class="badge ${a.status === 'aktif' ? 'bg-success' : 'bg-secondary'}">${a.status}</span></td>
+          <td>
+            <div class="d-flex gap-1">
+              <button class="btn-action btn-detail" onclick="showDetail(${a.id})" title="Detail">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button class="btn-action btn-edit" onclick="showModalEdit(${a.id})" title="Edit">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="btn-action btn-delete" onclick="hapusAnggota(${a.id}, '${a.nama}')" title="Hapus">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+        }
+
+        function filterAnggota() {
+            const q = document.getElementById('search-input').value.toLowerCase();
+            const filtered = dataAnggota.filter(a =>
+                a.nama.toLowerCase().includes(q) ||
+                a.email.toLowerCase().includes(q) ||
+                a.no_anggota.toLowerCase().includes(q)
+            );
+            renderAnggota(filtered);
+        }
+
+        function showModalTambah() {
+            document.getElementById('modal-title').textContent = 'Tambah Anggota';
+            document.getElementById('edit-id').value = '';
+            document.getElementById('input-nama').value = '';
+            document.getElementById('input-email').value = '';
+            document.getElementById('input-password').value = '';
+            document.getElementById('input-telepon').value = '';
+            document.getElementById('input-alamat').value = '';
+            document.getElementById('field-email').style.display = '';
+            document.getElementById('field-password').style.display = '';
+            document.getElementById('field-status').style.display = 'none';
+            modalInstance = new bootstrap.Modal(document.getElementById('modalAnggota'));
+            modalInstance.show();
+        }
+
+        function showModalEdit(id) {
+            const a = dataAnggota.find(x => x.id === id);
+            if (!a) return;
+            document.getElementById('modal-title').textContent = 'Edit Anggota';
+            document.getElementById('edit-id').value = id;
+            document.getElementById('input-nama').value = a.nama;
+            document.getElementById('input-telepon').value = a.no_telepon || '';
+            document.getElementById('input-alamat').value = a.alamat || '';
+            document.getElementById('input-status').value = a.status;
+            document.getElementById('field-email').style.display = 'none';
+            document.getElementById('field-password').style.display = 'none';
+            document.getElementById('field-status').style.display = '';
+            modalInstance = new bootstrap.Modal(document.getElementById('modalAnggota'));
+            modalInstance.show();
+        }
+
+        function showDetail(id) {
+            const a = dataAnggota.find(x => x.id === id);
+            if (!a) return;
+            document.getElementById('detail-body').innerHTML = `
+        <div class="text-center mb-3">
+          <div class="avatar mx-auto mb-2" style="width:60px;height:60px;font-size:1.5rem;">
+            ${a.nama.charAt(0).toUpperCase()}
+          </div>
+          <h6 class="mb-0">${a.nama}</h6>
+          <small class="text-muted">${a.no_anggota}</small>
+        </div>
+        <table class="table table-borderless table-sm">
+          <tr><td class="text-muted" style="width:40%">Email</td><td>${a.email}</td></tr>
+          <tr><td class="text-muted">No. Telepon</td><td>${a.no_telepon || '-'}</td></tr>
+          <tr><td class="text-muted">Alamat</td><td>${a.alamat || '-'}</td></tr>
+          <tr><td class="text-muted">Bergabung</td><td>${new Date(a.tanggal_bergabung).toLocaleDateString('id-ID')}</td></tr>
+          <tr><td class="text-muted">Saldo</td><td><strong class="text-success">${rupiah(a.saldo || 0)}</strong></td></tr>
+          <tr><td class="text-muted">Status</td><td><span class="badge ${a.status === 'aktif' ? 'bg-success' : 'bg-secondary'}">${a.status}</span></td></tr>
+        </table>
+      `;
+            new bootstrap.Modal(document.getElementById('modalDetail')).show();
+        }
+
+        async function simpanAnggota() {
+            const id = document.getElementById('edit-id').value;
+            const nama = document.getElementById('input-nama').value.trim();
+            const no_telepon = document.getElementById('input-telepon').value.trim();
+            const alamat = document.getElementById('input-alamat').value.trim();
+
+            if (!nama) return Swal.fire('Peringatan', 'Nama tidak boleh kosong!', 'warning');
+
+            try {
+                let res, data;
+                if (!id) {
+                    const email = document.getElementById('input-email').value.trim();
+                    const password = document.getElementById('input-password').value;
+                    if (!email || !password) return Swal.fire('Peringatan', 'Email dan password wajib diisi!', 'warning');
+
+                    res = await fetch('/api/anggota', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ nama, email, password, no_telepon, alamat })
+                    });
+                } else {
+                    const status = document.getElementById('input-status').value;
+                    res = await fetch(`/api/anggota/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ nama, no_telepon, alamat, status })
+                    });
+                }
+
+                data = await res.json();
+                if (res.ok) {
+                    bootstrap.Modal.getInstance(document.getElementById('modalAnggota')).hide();
+                    await Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500, showConfirmButton: false });
+                    loadAnggota();
+                } else {
+                    Swal.fire('Gagal', data.message, 'error');
+                }
+            } catch (err) {
+                Swal.fire('Error', 'Terjadi kesalahan server.', 'error');
+            }
+        }
+
+        async function hapusAnggota(id, nama) {
+            const result = await Swal.fire({
+                title: 'Hapus Anggota?',
+                html: `Anda akan menghapus anggota <strong>${nama}</strong>.<br>Semua data terkait akan ikut terhapus!`,
+                icon: 'warning', showCancelButton: true,
+                confirmButtonColor: '#dc3545', cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const res = await fetch(`/api/anggota/${id}`, {
+                        method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+                    if (res.ok) {
+                        await Swal.fire({ icon: 'success', title: 'Dihapus!', text: data.message, timer: 1500, showConfirmButton: false });
+                        loadAnggota();
+                    } else {
+                        Swal.fire('Gagal', data.message, 'error');
+                    }
+                } catch (err) {
+                    Swal.fire('Error', 'Terjadi kesalahan server.', 'error');
+                }
+            }
+        }
+
+        function logout() {
+            Swal.fire({
+                title: 'Logout?', text: 'Anda akan keluar dari sistem.',
+                icon: 'question', showCancelButton: true,
+                confirmButtonColor: '#dc3545', cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Logout', cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/';
+                }
+            });
+        }
+
+        loadAnggota();
+    </script>
+</body>
+
+</html>
