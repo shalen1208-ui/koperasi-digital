@@ -302,4 +302,24 @@ const requestBantuanPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getProfil, gantiPassword, lupaPassword, resetPassword, cekToken, requestBantuanPassword };
+
+
+// UPDATE PROFIL (anggota update sendiri)
+const updateProfil = async (req, res) => {
+  try {
+    const { nama, no_telepon, alamat } = req.body;
+    if (!nama) return res.status(400).json({ message: 'Nama tidak boleh kosong.' });
+
+    await db.query(
+      'UPDATE users SET nama = ?, no_telepon = ?, alamat = ? WHERE id = ?',
+      [nama, no_telepon, alamat, req.user.id]
+    );
+
+    res.json({ message: 'Profil berhasil diupdate!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Terjadi kesalahan server.' });
+  }
+};
+
+module.exports = { register, login, getProfil, gantiPassword, lupaPassword, resetPassword, cekToken, requestBantuanPassword, updateProfil };

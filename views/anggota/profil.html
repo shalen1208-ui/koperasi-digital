@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil - Koperasi Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .profil-card { background: white; border-radius: 16px; box-shadow: 0 2px 15px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 1.5rem; }
+    .profil-header { background: linear-gradient(135deg, #1a6b3c, #2d9e5f); padding: 2rem; text-align: center; }
+    .profil-avatar { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem; color: white; font-weight: 700; border: 3px solid rgba(255,255,255,0.4); }
+    .profil-header h5 { color: white; font-weight: 700; margin: 0; }
+    .profil-header small { color: rgba(255,255,255,0.7); }
+    .profil-body { padding: 1.5rem; }
+    .info-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid #f0f4f8; }
+    .info-item:last-child { border-bottom: none; }
+    .info-icon { width: 36px; height: 36px; border-radius: 10px; background: #e8f5ee; color: #1a6b3c; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-label { font-size: 0.78rem; color: #888; margin: 0; }
+    .info-value { font-size: 0.875rem; font-weight: 500; margin: 0; }
+    .btn-edit-profil { background: linear-gradient(135deg, #1a6b3c, #2d9e5f); border: none; border-radius: 10px; color: white; padding: 0.65rem 1.5rem; font-weight: 600; font-family: 'Poppins', sans-serif; width: 100%; transition: all 0.3s; }
+    .btn-edit-profil:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(26,107,60,0.3); }
+    .password-card { background: white; border-radius: 16px; box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 1.5rem; }
+    .password-card h6 { font-weight: 700; color: #1a1a2e; margin-bottom: 1.5rem; }
+    .btn-ganti-pw { background: linear-gradient(135deg, #3b5bdb, #4c6ef5); border: none; border-radius: 10px; color: white; padding: 0.65rem 1.5rem; font-weight: 600; font-family: 'Poppins', sans-serif; width: 100%; transition: all 0.3s; }
+    .btn-ganti-pw:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(59,91,219,0.3); }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+  <div class="sidebar">
+    <div class="sidebar-brand d-flex align-items-center gap-3">
+      <div class="brand-icon"><i class="fa-solid fa-building-columns text-white"></i></div>
+      <div><h6>Koperasi Digital</h6><small>Portal Anggota</small></div>
+    </div>
+    <div class="sidebar-menu">
+      <div class="menu-label">Menu</div>
+      <a href="/anggota/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="/anggota/simpanan"><i class="fa-solid fa-piggy-bank"></i> Simpanan</a>
+      <a href="/anggota/pinjaman"><i class="fa-solid fa-hand-holding-dollar"></i> Pinjaman</a>
+      <a href="/anggota/cicilan"><i class="fa-solid fa-calendar-check"></i> Cicilan</a>
+      <a href="/anggota/profil" class="active"><i class="fa-solid fa-user"></i> Profil Saya</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-info mb-2"><div class="fw-600" id="user-nama">Anggota</div><small id="user-email"></small></div>
+      <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div><h5>Profil Saya</h5><small class="text-muted d-none d-md-block">Kelola informasi akun Anda</small></div>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="row g-3">
+        <!-- PROFIL CARD -->
+        <div class="col-lg-4">
+          <div class="profil-card">
+            <div class="profil-header">
+              <div class="profil-avatar" id="profil-avatar">?</div>
+              <h5 id="profil-nama">-</h5>
+              <small id="profil-no-anggota">-</small>
+            </div>
+            <div class="profil-body">
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div><p class="info-label">Email</p><p class="info-value" id="profil-email">-</p></div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                <div><p class="info-label">No. Telepon</p><p class="info-value" id="profil-telepon">-</p></div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div><p class="info-label">Alamat</p><p class="info-value" id="profil-alamat">-</p></div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-calendar"></i></div>
+                <div><p class="info-label">Bergabung</p><p class="info-value" id="profil-bergabung">-</p></div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div><p class="info-label">Status</p><p class="info-value" id="profil-status">-</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EDIT & PASSWORD -->
+        <div class="col-lg-8">
+          <!-- EDIT PROFIL -->
+          <div class="profil-card">
+            <div class="profil-body">
+              <h6 style="font-weight:700;color:#1a1a2e;margin-bottom:1.5rem;">
+                <i class="fa-solid fa-pen me-2 text-success"></i>Edit Profil
+              </h6>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nama Lengkap</label>
+                  <input type="text" class="form-control" id="edit-nama" placeholder="Nama lengkap">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">No. Telepon</label>
+                  <input type="tel" class="form-control" id="edit-telepon" placeholder="No. telepon">
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Alamat</label>
+                  <textarea class="form-control" id="edit-alamat" rows="3" placeholder="Alamat lengkap"></textarea>
+                </div>
+                <div class="col-12">
+                  <button class="btn-edit-profil btn" onclick="simpanProfil()">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Perubahan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GANTI PASSWORD -->
+          <div class="password-card">
+            <h6><i class="fa-solid fa-lock me-2 text-primary"></i>Ganti Password</h6>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Password Lama</label>
+                <input type="password" class="form-control" id="pw-lama" placeholder="Masukkan password lama">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Password Baru</label>
+                <input type="password" class="form-control" id="pw-baru" placeholder="Minimal 6 karakter">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Konfirmasi Password</label>
+                <input type="password" class="form-control" id="pw-konfirmasi" placeholder="Ulangi password baru">
+              </div>
+              <div class="col-12">
+                <button class="btn-ganti-pw btn" onclick="gantiPassword()">
+                  <i class="fa-solid fa-key me-2"></i>Ganti Password
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!token || !user || user.role !== 'anggota') window.location.href = '/';
+
+    document.getElementById('user-nama').textContent = user?.nama || 'Anggota';
+    document.getElementById('user-email').textContent = user?.email || '';
+
+    async function loadProfil() {
+      try {
+        const res = await fetch('/api/auth/profil', { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+
+        document.getElementById('profil-avatar').textContent = data.nama.charAt(0).toUpperCase();
+        document.getElementById('profil-nama').textContent = data.nama;
+        document.getElementById('profil-no-anggota').textContent = data.no_anggota || '-';
+        document.getElementById('profil-email').textContent = data.email;
+        document.getElementById('profil-telepon').textContent = data.no_telepon || '-';
+        document.getElementById('profil-alamat').textContent = data.alamat || '-';
+        document.getElementById('profil-bergabung').textContent = data.tanggal_bergabung ? new Date(data.tanggal_bergabung).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' }) : '-';
+        document.getElementById('profil-status').innerHTML = `<span class="badge ${data.status === 'aktif' ? 'bg-success' : 'bg-secondary'}">${data.status || '-'}</span>`;
+
+        // Isi form edit
+        document.getElementById('edit-nama').value = data.nama;
+        document.getElementById('edit-telepon').value = data.no_telepon || '';
+        document.getElementById('edit-alamat').value = data.alamat || '';
+      } catch(err) { console.error(err); }
+    }
+
+    async function simpanProfil() {
+      const nama = document.getElementById('edit-nama').value.trim();
+      const no_telepon = document.getElementById('edit-telepon').value.trim();
+      const alamat = document.getElementById('edit-alamat').value.trim();
+
+      if (!nama) return Swal.fire('Peringatan', 'Nama tidak boleh kosong!', 'warning');
+
+      try {
+        const res = await fetch('/api/auth/profil', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ nama, no_telepon, alamat })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          // Update localStorage
+          const updatedUser = { ...user, nama };
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          await Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500, showConfirmButton: false });
+          loadProfil();
+        } else {
+          Swal.fire('Gagal', data.message, 'error');
+        }
+      } catch(err) { Swal.fire('Error', 'Terjadi kesalahan server.', 'error'); }
+    }
+
+    async function gantiPassword() {
+      const password_lama = document.getElementById('pw-lama').value;
+      const password_baru = document.getElementById('pw-baru').value;
+      const konfirmasi = document.getElementById('pw-konfirmasi').value;
+
+      if (!password_lama || !password_baru || !konfirmasi) return Swal.fire('Peringatan', 'Semua field wajib diisi!', 'warning');
+      if (password_baru.length < 6) return Swal.fire('Peringatan', 'Password baru minimal 6 karakter!', 'warning');
+      if (password_baru !== konfirmasi) return Swal.fire('Peringatan', 'Konfirmasi password tidak cocok!', 'warning');
+
+      try {
+        const res = await fetch('/api/auth/ganti-password', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ password_lama, password_baru })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('pw-lama').value = '';
+          document.getElementById('pw-baru').value = '';
+          document.getElementById('pw-konfirmasi').value = '';
+          await Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500, showConfirmButton: false });
+        } else {
+          Swal.fire('Gagal', data.message, 'error');
+        }
+      } catch(err) { Swal.fire('Error', 'Terjadi kesalahan server.', 'error'); }
+    }
+
+    loadProfil();
+  </script>
+</body>
+</html>
